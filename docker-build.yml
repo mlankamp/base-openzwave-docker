@@ -1,0 +1,35 @@
+jobs:
+- job: ${{ parameters.target_arch }}
+  pool:
+    vmImage: 'ubuntu-latest'
+  variables:
+    TARGET_ARCH: ${{ parameters.target_arch }}
+    BUILD_ARCH: ${{ parameters.build_arch }}
+    QEMU_ARCH: ${{ parameters.qemu_arch }}
+    OPENZWAVE_VERSION: ${{ parameters.openzwave }}
+  steps:
+    - task: Docker@0
+      displayName: 'Enable qemu'
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerRegistryConnection: mlankamp
+        action: 'Run a Docker command'
+        customCommand: 'run --rm --privileged multiarch/qemu-user-static:register --reset'
+    - task: Docker@0
+      displayName: 'Build image'
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerRegistryConnection: mlankamp
+        buildArguments: |
+         TARGET_ARCH=$(TARGET_ARCH)
+         BUILD_ARCH=$(BUILD_ARCH)
+         QEMU_ARCH=$(QEMU_ARCH)
+         OPENZWAVE_VERSION=$(OPENZWAVE_VERSION)
+        imageName: 'mlankamp/base-openzwave:${TARGET_ARCH}-$(OPENZWAVE_VERSION)'
+    - task: Docker@0
+      displayName: 'Push image'
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerRegistryConnection: mlankamp
+        action: 'Push an image'
+        imageName: 'mlankamp/base-openzwave:${TARGET_ARCH}-$(OPENZWAVE_VERSION)'
