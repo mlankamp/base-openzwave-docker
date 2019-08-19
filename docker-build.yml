@@ -25,11 +25,11 @@ jobs:
          BUILD_ARCH=$(BUILD_ARCH)
          QEMU_ARCH=$(QEMU_ARCH)
          OPENZWAVE_VERSION=$(OPENZWAVE_VERSION)
-        imageName: 'mlankamp/base-openzwave:${TARGET_ARCH}-$(OPENZWAVE_VERSION)'
+        imageName: 'mlankamp/base-openzwave:$(TARGET_ARCH)-$(OPENZWAVE_VERSION)'
     - task: Docker@0
       displayName: 'Push image'
       inputs:
         containerregistrytype: 'Container Registry'
         dockerRegistryConnection: mlankamp-docker
         action: 'Push an image'
-        imageName: 'mlankamp/base-openzwave:${TARGET_ARCH}-$(OPENZWAVE_VERSION)'
+        imageName: 'mlankamp/base-openzwave:$(TARGET_ARCH)-$(OPENZWAVE_VERSION)'
