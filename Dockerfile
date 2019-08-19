@@ -66,6 +66,9 @@ RUN rm -R /root/* && apk del .build-deps
 # STEP 3:
 # Run a minimal alpine image
 FROM ${TARGET_ARCH}/alpine:latest
+ARG QEMU_ARCH
+
+COPY --from=qemu /qemu-${QEMU_ARCH}-static /usr/bin/qemu-${QEMU_ARCH}-static
 
 LABEL maintainer="mlankamp"
 
