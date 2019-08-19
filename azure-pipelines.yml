@@ -1,4 +1,3 @@
-parameters:
 variables:
   openzwave: '1.6.784'
 
