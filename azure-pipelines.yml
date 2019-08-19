@@ -1,28 +1,19 @@
 variables:
-  openzwave: '1.6.881'
+  openzwave: '1.6.784'
 
 jobs:
   - template: docker-build.yml
     parameters:
-      target_arch: amd64
       build_arch: amd64
       qemu_arch: x86_64
       openzwave: $(openzwave)
   - template: docker-build.yml
     parameters:
-      target_arch: arm32v6
       build_arch: arm32v6
       qemu_arch: arm
       openzwave: $(openzwave)
   - template: docker-build.yml
     parameters:
-      target_arch: arm32v7
-      build_arch: arm32v6
-      qemu_arch: arm
-      openzwave: $(openzwave)
-  - template: docker-build.yml
-    parameters:
-      target_arch: arm64v8
       build_arch: arm64v8
       qemu_arch: aarch64
       openzwave: $(openzwave)
