@@ -8,7 +8,6 @@ ARG TARGET_ARCH=amd64
 FROM alpine AS qemu
 ARG QEMU_ARCH=x86_64
 ARG QEMU_VERSION=v4.0.0-4
-ARG OPENZWAVE_VERSION=1.6.784
 ADD https://github.com/multiarch/qemu-user-static/releases/download/${QEMU_VERSION}/qemu-${QEMU_ARCH}-static /qemu-${QEMU_ARCH}-static
 RUN chmod +x /qemu-${QEMU_ARCH}-static
 
@@ -18,6 +17,7 @@ RUN chmod +x /qemu-${QEMU_ARCH}-static
 # All result files will be put in /dist folder
 FROM ${BUILD_ARCH}/node:carbon-alpine AS build
 ARG QEMU_ARCH
+ARG OPENZWAVE_VERSION
 
 COPY --from=qemu /qemu-${QEMU_ARCH}-static /usr/bin/qemu-${QEMU_ARCH}-static
 
