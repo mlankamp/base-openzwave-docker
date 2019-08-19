@@ -12,14 +12,14 @@ jobs:
       displayName: 'Enable qemu'
       inputs:
         containerregistrytype: 'Container Registry'
-        dockerRegistryConnection: mlankamp
+        dockerRegistryConnection: mlankamp-docker
         action: 'Run a Docker command'
         customCommand: 'run --rm --privileged multiarch/qemu-user-static:register --reset'
     - task: Docker@0
       displayName: 'Build image'
       inputs:
         containerregistrytype: 'Container Registry'
-        dockerRegistryConnection: mlankamp
+        dockerRegistryConnection: mlankamp-docker
         buildArguments: |
          TARGET_ARCH=$(TARGET_ARCH)
          BUILD_ARCH=$(BUILD_ARCH)
@@ -30,6 +30,6 @@ jobs:
       displayName: 'Push image'
       inputs:
         containerregistrytype: 'Container Registry'
-        dockerRegistryConnection: mlankamp
+        dockerRegistryConnection: mlankamp-docker
         action: 'Push an image'
         imageName: 'mlankamp/base-openzwave:${TARGET_ARCH}-$(OPENZWAVE_VERSION)'
