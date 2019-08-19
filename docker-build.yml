@@ -25,10 +25,11 @@ jobs:
         tags: '$(BUILD_ARCH)-$(OPENZWAVE_VERSION)'
         addPipelineData: false
 
-    - task: Docker@0
+    - task: Docker@2
       displayName: 'Push image'
       inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryConnection: mlankamp-docker
-        action: 'Push an image'
-        imageName: 'mlankamp/node-openzwave:$(BUILD_ARCH)-$(OPENZWAVE_VERSION)'
+        containerRegistry: 'mlankamp-docker'
+        repository: 'node-openzwave'
+        command: push
+        tags: '$(BUILD_ARCH)-$(OPENZWAVE_VERSION)'
+        addPipelineData: false
