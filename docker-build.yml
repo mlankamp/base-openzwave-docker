@@ -22,7 +22,7 @@ jobs:
         repository: 'node-openzwave'
         command: build
         arguments: '--build-arg BUILD_ARCH=$(BUILD_ARCH) --build-arg QEMU_ARCH=$(QEMU_ARCH) --build-arg OPENZWAVE_VERSION=$(OPENZWAVE_VERSION) --add-host old.openzwave.com:184.106.179.216'
-        tags: '$(TARGET_ARCH)-$(OPENZWAVE_VERSION)'
+        tags: '$(BUILD_ARCH)-$(OPENZWAVE_VERSION)'
         addPipelineData: false
 
     - task: Docker@0
@@ -31,4 +31,4 @@ jobs:
         containerregistrytype: 'Container Registry'
         dockerRegistryConnection: mlankamp-docker
         action: 'Push an image'
-        imageName: 'mlankamp/node-openzwave:$(TARGET_ARCH)-$(OPENZWAVE_VERSION)'
+        imageName: 'mlankamp/node-openzwave:$(BUILD_ARCH)-$(OPENZWAVE_VERSION)'
