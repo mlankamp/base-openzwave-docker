@@ -1,5 +1,5 @@
 jobs:
-- job: ${{ parameters.target_arch }}
+- job: ${{ parameters.build_arch }}
   pool:
     vmImage: 'ubuntu-latest'
   variables:
@@ -11,7 +11,7 @@ jobs:
       displayName: 'Enable qemu'
       inputs:
         containerregistrytype: 'Container Registry'
-        dockerRegistryConnection: mlankamp-docker
+        dockerRegistryConnection: 'mlankamp-docker'
         action: 'Run a Docker command'
         customCommand: 'run --rm --privileged multiarch/qemu-user-static:register --reset'
 
@@ -19,10 +19,10 @@ jobs:
       displayName: 'Build image'
       inputs:
         containerRegistry: 'mlankamp-docker'
-        repository: node-openzwave
+        repository: 'node-openzwave'
         command: build
         arguments: '--build-arg BUILD_ARCH=$(BUILD_ARCH) --build-arg QEMU_ARCH=$(QEMU_ARCH) --build-arg OPENZWAVE_VERSION=$(OPENZWAVE_VERSION) --add-host old.openzwave.com:184.106.179.216'
-        tags: 'mlankamp/node-openzwave:$(TARGET_ARCH)-$(OPENZWAVE_VERSION)'
+        tags: '$(TARGET_ARCH)-$(OPENZWAVE_VERSION)'
         addPipelineData: false
 
     - task: Docker@0
