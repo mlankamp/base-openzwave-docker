@@ -22,7 +22,7 @@ jobs:
       openzwave: $(openzwave)
   - template: docker-build.yml
     parameters:
-      target_arch: arm32v8
+      target_arch: arm64v8
       build_arch: arm64v8
       qemu_arch: aarch64
       openzwave: $(openzwave)

@@ -8,16 +8,18 @@ ARG TARGET_ARCH=amd64
 FROM alpine AS qemu
 ARG QEMU_ARCH=x86_64
 ARG QEMU_VERSION=v4.0.0-4
-ADD https://github.com/multiarch/qemu-user-static/releases/download/${QEMU_VERSION}/qemu-${QEMU_ARCH}-static /qemu-${QEMU_ARCH}-static
-RUN chmod +x /qemu-${QEMU_ARCH}-static
+ADD https://github.com/multiarch/qemu-user-static/releases/download/${QEMU_VERSION}/x86_64_qemu-${QEMU_ARCH}-static.tar.gz /x86_64_qemu-${QEMU_ARCH}-static.tar.gz
+RUN tar -xvf x86_64_qemu-${QEMU_ARCH}-static.tar.gz \
+    && rm x86_64_qemu-${QEMU_ARCH}-static.tar.gz \
+    && chmod +x /qemu-${QEMU_ARCH}-static
 
 # ----------------
 # STEP 1:
-# Build Openzwave and nodejs
-# All result files will be put in /dist folder
-FROM ${BUILD_ARCH}/node:carbon-alpine AS build
+# Create images with nodejs and Openzwave
+FROM ${BUILD_ARCH}/node:carbon-alpine
 ARG QEMU_ARCH
 ARG OPENZWAVE_VERSION
+LABEL maintainer="mlankamp"
 
 COPY --from=qemu /qemu-${QEMU_ARCH}-static /usr/bin/qemu-${QEMU_ARCH}-static
 
@@ -28,7 +30,7 @@ RUN apk update && apk --no-cache add \
       libusb \
       eudev \
       # Install build dependencies
-    && apk --no-cache --virtual .build-deps add \
+    && apk --no-cache add \
       coreutils \
       eudev-dev \
       build-base \
@@ -48,40 +50,15 @@ RUN cd /root \
     && tar zxvf openzwave-*.gz \
     && cd openzwave-* \
     && make \
-    && make install \
-    && mkdir -p /dist/lib \
-    && mv libopenzwave.so* /dist/lib/
+    && make install
 
 # Get last config DB from main repo and move files to /dist/db
 RUN cd /root \
     && git clone https://github.com/OpenZWave/open-zwave.git \
     && cd open-zwave \
-    && mkdir -p /dist/db \
-    && mv config/* /dist/db
+    && rm -r /usr/local/etc/openzwave \
+    && mkdir -p /usr/local/etc/openzwave \
+    && mv config/* /usr/local/etc/openzwave/
 
 # Clean up
-RUN rm -R /root/* && apk del .build-deps
-
-# ----------------
-# STEP 3:
-# Run a minimal alpine image
-FROM ${TARGET_ARCH}/alpine:latest
-ARG QEMU_ARCH
-
-COPY --from=qemu /qemu-${QEMU_ARCH}-static /usr/bin/qemu-${QEMU_ARCH}-static
-
-LABEL maintainer="mlankamp"
-
-RUN apk update && apk add --no-cache \
-    libstdc++  \
-    libgcc \
-    libusb \
-    tzdata \
-    eudev
-
-# Copy files from previous build stage
-COPY --from=build /dist/lib/ /lib/
-COPY --from=build /dist/db/ /usr/local/etc/openzwave/
-
-# Set enviroment
-ENV LD_LIBRARY_PATH /lib
+RUN rm -R /root/*
