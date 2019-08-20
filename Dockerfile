@@ -15,7 +15,7 @@ RUN tar -xvf x86_64_qemu-${QEMU_ARCH}-static.tar.gz \
 # ----------------
 # STEP 1:
 # Create images with nodejs and Openzwave
-FROM ${BUILD_ARCH}/node:carbon-alpine
+FROM ${BUILD_ARCH}/node:current-alpine
 ARG QEMU_ARCH
 ARG OPENZWAVE_VERSION
 LABEL maintainer="mlankamp"

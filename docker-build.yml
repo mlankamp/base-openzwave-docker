@@ -19,21 +19,21 @@ jobs:
       displayName: 'Build image'
       inputs:
         containerRegistry: 'mlankamp-docker'
-        repository: 'mlankamp/node-openzwave'
+        repository: 'mlankamp/openzwave'
         command: build
         arguments: '--build-arg BUILD_ARCH=$(BUILD_ARCH) --build-arg QEMU_ARCH=$(QEMU_ARCH) --build-arg OPENZWAVE_VERSION=$(OPENZWAVE_VERSION) --add-host old.openzwave.com:184.106.179.216'
         tags: |
-          $(BUILD_ARCH)-$(OPENZWAVE_VERSION)
-          $(BUILD_ARCH)-latest
+          node12-alpine-$(BUILD_ARCH)-$(OPENZWAVE_VERSION)
+          node12-alpine-$(BUILD_ARCH)-latest
         addPipelineData: false
 
     - task: Docker@2
       displayName: 'Push image'
       inputs:
         containerRegistry: 'mlankamp-docker'
-        repository: 'mlankamp/node-openzwave'
+        repository: 'mlankamp/openzwave'
         command: push
         tags: |
-          $(BUILD_ARCH)-$(OPENZWAVE_VERSION)
-          $(BUILD_ARCH)-latest
+          node12-alpine-$(BUILD_ARCH)-$(OPENZWAVE_VERSION)
+          node12-alpine-$(BUILD_ARCH)-latest
         addPipelineData: false
