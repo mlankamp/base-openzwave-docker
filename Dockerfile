@@ -62,10 +62,13 @@ RUN cd /root \
 
 # Prepare the server build directory (install openzwave-shared npm package and pre-build)
 # This step is done, so the zwave2mqtt build runs faster!
-RUN mkdir -p /build/server
-COPY ./package.json /build/server/
+RUN mkdir -p /build/server && mkdir -p /build/client
+COPY ./server/package.json /build/server/
+COPY ./client/package.json /build/client/
 RUN npm config set unsafe-perm true \
     && cd /build/server \
+    && npm install \
+    && cd /build/client \
     && npm install
 
 # Clean up
