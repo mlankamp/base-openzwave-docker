@@ -1,5 +1,6 @@
 jobs:
 - job: ${{ parameters.build_arch }}
+  timeoutInMinutes: 0
   pool:
     vmImage: 'ubuntu-latest'
   variables:
