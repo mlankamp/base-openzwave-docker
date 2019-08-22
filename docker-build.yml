@@ -24,6 +24,7 @@ jobs:
         arguments: '--build-arg BUILD_ARCH=$(BUILD_ARCH) --build-arg QEMU_ARCH=$(QEMU_ARCH) --build-arg OPENZWAVE_VERSION=$(OPENZWAVE_VERSION) --add-host old.openzwave.com:184.106.179.216'
         tags: |
           node12-alpine-$(BUILD_ARCH)-$(OPENZWAVE_VERSION)
+          node12-alpine-$(BUILD_ARCH)-latest
         addPipelineData: false
 
     - task: Docker@2
@@ -34,4 +35,5 @@ jobs:
         command: push
         tags: |
           node12-alpine-$(BUILD_ARCH)-$(OPENZWAVE_VERSION)
+          node12-alpine-$(BUILD_ARCH)-latest
         addPipelineData: false
