@@ -41,7 +41,8 @@ RUN apk update && apk --no-cache add \
       wget \
       tar  \
       openssl \
-      make
+      make \
+      udev
 
 # Build binaries and move them to /dist/lib
 RUN cd /root \
