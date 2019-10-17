@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "openzwave-shared": "1.5.7",
+    "openzwave-shared": "1.5.8",
     "serialport": "7.1.5"
   }
 }
