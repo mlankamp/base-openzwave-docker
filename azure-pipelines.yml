@@ -1,5 +1,5 @@
 variables:
-  openzwave: '1.6.943'
+  openzwave: '1.6.948'
 
 jobs:
   - template: docker-build.yml
